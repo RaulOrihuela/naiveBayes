@@ -34,7 +34,7 @@ public class MovieService {
     }
 
     public static String movie_predict(Movie movie) throws SQLException {
-        String result = "";
+        String result = "", temp1 = "", temp2 = "";
         Connection connection = MySQLConnection.getConnection("imdb", "root","5th1ra5ukham45anam");
         CallableStatement statement = connection.prepareCall("CALL predict(?,?,?,?,?,?,?,?,?,?,?,?)");
         statement.setBoolean("in_isAction", movie.getAction());
@@ -52,8 +52,14 @@ public class MovieService {
 
         ResultSet rs = statement.executeQuery();
         while(rs.next()){
-            result += "Critics Score : " + rs.getString("criticsScore") + "\n";
-            result += "Users Score : " + rs.getString("userScore");
+            temp1 = rs.getString("criticsScore");
+            temp2 = rs.getString("userScore");
+
+            movie.setMetascore(temp1);
+            movie.setImdbRating(temp2);
+
+            result += "Critics Score : " + temp1 + "\n";
+            result += "Users Score : " + temp2;
         }
         rs.close();
         statement.close();

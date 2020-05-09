@@ -25,21 +25,13 @@ public class ImdbCrawlerTest {
         driver.quit();
     }
 
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        Thread.sleep(5000);
-    }
-
-    @Ignore
+    @Test
     public void basicCrawl() throws InterruptedException {
         ArrayList<String> results = ImdbCrawler.getTopMovies(driver);
 
         System.out.println(results.toString());
+
+        for (int i = 0; i < 3; i ++) System.out.println(ImdbCrawler.analyzeMovie(driver, results.get(i)).toString());
 
         assertThat("Did not find all movies",
                 results.size(),
@@ -47,21 +39,6 @@ public class ImdbCrawlerTest {
         );
     }
 
-
-    @Ignore
-    public void search() throws InterruptedException, SQLException {
-
-        MovieService.movie_C(ImdbCrawler.analyzeMovie(driver, "https://www.imdb.com/title/tt0437086/?ref_=adv_li_tt"));
-        MovieService.movie_C(ImdbCrawler.analyzeMovie(driver, "https://www.imdb.com/title/tt6751668/?ref_=adv_li_tt"));
-        MovieService.movie_C(ImdbCrawler.analyzeMovie(driver, "https://www.imdb.com/title/tt12187924/?ref_=adv_li_tt"));
-
-        assertThat("Did not find all movies",
-                1,
-                is(equalTo(1))
-        );
-
-
-    }
 
     @Ignore
     public void writeToDb() throws InterruptedException, SQLException {
@@ -78,18 +55,14 @@ public class ImdbCrawlerTest {
 
         MovieService.movie_C(movie);
 
-        assertThat("Did not find all movies",
-                1,
-                is(equalTo(1))
-        );
     }
 
-    @Test
+    @Ignore
     public void predict() throws InterruptedException, SQLException {
 
         Movie movie = new Movie();
 
-        movie.setLength("medium");
+        movie.setLength(Movie.categorizeLength(120));
         movie.setAction(true);
         movie.setCrime(true);
         movie.setFantasy(true);
@@ -97,9 +70,13 @@ public class ImdbCrawlerTest {
 
         System.out.println(MovieService.movie_predict(movie));
 
-        assertThat("Did not find all movies",
-                1,
-                is(equalTo(1))
+        assertThat("Did not match prediction",
+                movie.getImdbRating(),
+                is(equalTo("favorable"))
+        );
+        assertThat("Did not match prediction",
+                movie.getMetascore(),
+                is(equalTo("mixed"))
         );
     }
 
