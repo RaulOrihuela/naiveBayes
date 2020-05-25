@@ -223,4 +223,78 @@ public class Movie {
                 break;
         }
     }
+
+    public MovieKMeans prepareKMeans(){
+        MovieKMeans transform = new MovieKMeans();
+        transform.setTitle(this.title);
+        Double pleasantness = 0.0, intensity = 0.0;
+        Integer attributeCount = 0;
+
+        if (this.isAction) { pleasantness += 7.41; intensity += 8.41; attributeCount ++;}
+        if (this.isAdventure) { pleasantness += 8.83; intensity += 7.83; attributeCount ++;}
+        if (this.isComedy) { pleasantness += 7.33; intensity += 7.16; attributeCount ++;}
+        if (this.isCrime) { pleasantness += 5.3; intensity += 8.4; attributeCount ++;}
+        if (this.isDrama) { pleasantness += 4.25; intensity += 7.5; attributeCount ++;}
+        if (this.isFantasy) { pleasantness += 8.16; intensity += 9.16; attributeCount ++;}
+        if (this.isHorror) { pleasantness += 2.33; intensity += 8.5; attributeCount ++;}
+        if (this.isMystery) { pleasantness += 4; intensity += 7.8; attributeCount ++;}
+        if (this.isRomance) { pleasantness += 6.83; intensity += 4.83; attributeCount ++;}
+        if (this.isSciFi) { pleasantness += 7.25; intensity += 8; attributeCount ++;}
+        if (this.isThriller) { pleasantness += 4.16; intensity += 9.5; attributeCount ++;}
+
+        if (attributeCount!=0){
+            pleasantness /= attributeCount;
+            intensity /= attributeCount;
+        }
+
+        transform.setEmotionPleasantness(pleasantness);
+        transform.setEmotionIntensity(intensity);
+
+        switch (this.metascore) {
+            case "NA":
+                transform.setMetascore(0.0);
+                break;
+            case "unfavorable":
+                transform.setMetascore(1.0);
+                break;
+            case "mixed":
+                transform.setMetascore(2.0);
+                break;
+            case "favorable":
+                transform.setMetascore(3.0);
+                break;
+        }
+
+        switch (this.imdbRating) {
+            case "NA":
+                transform.setImdbRating(0.0);
+                break;
+            case "unfavorable":
+                transform.setImdbRating(1.0);
+                break;
+            case "mixed":
+                transform.setImdbRating(2.0);
+                break;
+            case "favorable":
+                transform.setImdbRating(3.0);
+                break;
+        }
+
+        switch (this.length) {
+            case "NA":
+                transform.setLength(0.0);
+                break;
+            case "short":
+                transform.setLength(1.0);
+                break;
+            case "medium":
+                transform.setLength(2.0);
+                break;
+            case "long":
+                transform.setLength(3.0);
+                break;
+        }
+
+        return transform;
+    }
 }

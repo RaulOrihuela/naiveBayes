@@ -25,7 +25,7 @@ public class ImdbCrawlerTest {
         driver.quit();
     }
 
-    @Test
+    @Ignore
     public void basicCrawl() throws InterruptedException {
         ArrayList<String> results = ImdbCrawler.getTopMovies(driver);
 
